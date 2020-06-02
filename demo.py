@@ -19,7 +19,7 @@ def securityAccess(resp, req):
     if req.service + 0x40 != resp.service or len(req) < 2:
         if req.service == 0x27 and resp.service == 0x7f:
             return True
-        return False
+        return
     if req.securityAccessType == 1:
         print('Seed request')
         resp.securityAccessType = 1
@@ -27,7 +27,6 @@ def securityAccess(resp, req):
         return True
     elif req.securityAccessType == 2:
         print('Key received')
-        print(req.securityKey)
         if req.securityKey == bytes([0x11]):
             resp.securityAccessType = 2
             return True
@@ -43,7 +42,7 @@ def transferData(resp, req):
             transfer_done = True
             #new_fw = open("firmware/rec_random.txt", "wb")
             data = req.transferRequestParameterRecord.decode("utf-8")
-            print(data)
+            print("Received data")
             #new_fw.write(data)
             #new_fw.close()
             return True
@@ -88,6 +87,8 @@ responseList = [ECUResponse(session=2, responses=UDS() / UDS_SAPR(), answers=sec
 
                 ECUResponse(session=2, security_level=range(1, 255), responses=UDS() / UDS_RTEPR(transferResponseParameterRecord=b'ok'), answers=transferExit),
                 ECUResponse(session=2, security_level=range(1, 255), responses=UDS() / UDS_NR(requestServiceId=0x37, negativeResponseCode=0x22), answers=transferExit),
+
+                ECUResponse(session=range(255), security_level=range(255), responses=UDS() / UDS_ERPR())
                 ]
 
 answering_machine1 = ECU_am(supported_responses=responseList, main_socket=sock1, basecls=UDS, timeout=None)
