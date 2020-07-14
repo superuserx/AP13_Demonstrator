@@ -1,6 +1,12 @@
 from scapy.all import *
 from scapy.layers.can import *
-import threading
+from Crypto.Cipher import AES
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
+from Crypto.Signature import pkcs1_15
+from Crypto.Random import get_random_bytes
+from base64 import b64decode
+import threading, json
 
 
 conf.contribs['ISOTP'] = {'use-can-isotp-kernel-module': True}
@@ -15,7 +21,37 @@ sock1 = ISOTPSocket('vcan0', sid=0x701, did=0x601, basecls=UDS)
 transfer_ready = False
 transfer_done = False
 
+SA_secret = 0xdeadbeeeef
+SA_sec_key = None
+
+aes_key = b"passwordpassword"
+rsa_pub_key = RSA.import_key(open('public_key.pub').read())
+
+
+def update_fw(new_firmware):
+    with open("firmware_ecu/firmware.sh", "wb") as new_fw:
+        new_fw.write(new_firmware)
+        print("Update succeeded :)")
+
+
+def decrypt_verify_data(data):
+    b64 = json.loads(data)
+    payload = { x:b64decode(b64[x]) for x in ['nonce', 'ciphertext', 'tag', 'sign'] }
+    cipher = AES.new(aes_key, AES.MODE_OCB, nonce=payload['nonce'])
+    sign = payload['sign']
+    plaintext = cipher.decrypt_and_verify(payload['ciphertext'], payload['tag'])
+    h = SHA256.new(plaintext)
+    try:
+        pkcs1_15.new(rsa_pub_key).verify(h, sign)
+        print("Signature valid")
+    except (ValueError, TypeError):
+        print("Signature not valid")
+        return
+    update_fw(plaintext)
+
+
 def securityAccess(resp, req):
+    global SA_sec_key, SA_secret
     if req.service + 0x40 != resp.service or len(req) < 2:
         if req.service == 0x27 and resp.service == 0x7f:
             return True
@@ -23,11 +59,12 @@ def securityAccess(resp, req):
     if req.securityAccessType == 1:
         print('Seed request')
         resp.securityAccessType = 1
-        resp.securitySeed = bytes([0xab])
+        resp.securitySeed = get_random_bytes(5)
+        SA_sec_key = SA_secret ^ int(resp.securitySeed.hex(), 16)
         return True
     elif req.securityAccessType == 2:
         print('Key received')
-        if req.securityKey == bytes([0x11]):
+        if req.securityKey == SA_sec_key.to_bytes(5, 'big'):
             resp.securityAccessType = 2
             return True
     return False
@@ -40,9 +77,11 @@ def transferData(resp, req):
         if req.blockSequenceCounter == 0 and transfer_ready:
             transfer_ready = False
             transfer_done = True
+            print("Received data")
             #new_fw = open("firmware/rec_random.txt", "wb")
             data = req.transferRequestParameterRecord.decode("utf-8")
-            print("Received data")
+            decrypt_verify_data(data)
+
             #new_fw.write(data)
             #new_fw.close()
             return True
@@ -91,7 +130,7 @@ responseList = [ECUResponse(session=2, responses=UDS() / UDS_SAPR(), answers=sec
                 ECUResponse(session=range(255), security_level=range(255), responses=UDS() / UDS_ERPR())
                 ]
 
-answering_machine1 = ECU_am(supported_responses=responseList, main_socket=sock1, basecls=UDS, timeout=None)
+answering_machine1 = ECU_am(supported_responses=responseList, main_socket=sock1, basecls=UDS, timeout=None, verbose=False)
 sim1 = threading.Thread(target=answering_machine1)
 sim1.start()
 
