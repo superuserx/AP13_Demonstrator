@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "sa sign"
+echo "hello, this is firmware."

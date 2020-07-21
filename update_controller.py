@@ -117,7 +117,7 @@ def transferData(resp, req):
                 data = payload['data']
             if use_sign:
                 if not verify_data(data, payload['sign']):
-                    return True
+                    return False
             update_fw(data)
             return True
     return False

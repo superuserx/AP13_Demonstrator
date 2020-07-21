@@ -74,7 +74,7 @@ sock = ISOTPSocket('vcan0', sid=0x601, did=0x701, basecls=UDS)
 for req in requests:
     if hasattr(req, 'securityAccessType') and req.securityAccessType == 0x2:
         req.securityKey = SA_sec_key.to_bytes(5, 'big')
-        #req.securityKey = 0xBEF171B44E.to_bytes(5, 'big')
+        #req.securityKey = 0xEBDA8B87FB.to_bytes(5, 'big')
 
     resp = sock.sr1(req, timeout=0.1, verbose=False)
     time.sleep(0.3)
