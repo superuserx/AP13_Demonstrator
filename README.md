@@ -18,9 +18,9 @@ Hierbei werden zwei Steuergeräte (*ova_controller.py* / *update_controller.py*)
 
 # Usage
 
-**1. python update_controller.py [optional flags]**
+**1. python3 update_controller.py [optional flags]**
 
-**2. python ova_controller.py [optional flags]**
+**2. python3 ova_controller.py [optional flags]**
 
 Nachdem das Update übertragen wurde beendet sich der OVA Controller während der Update Controller in einer Endlosschleife läuft. Der Update Controller muss nur bei einer Änderung der Konfiguration (optional flags) neu gestartet werden. 
 Um die Auswirkung der eingesetzten Sicherheitsmechanismen zu veranschaulichen, können diese über das jeweilige Flag hinzugeschaltet oder weggelassen werden.
@@ -31,8 +31,9 @@ Um die Auswirkung der eingesetzten Sicherheitsmechanismen zu veranschaulichen, k
 
 **Für einen erfolgreichen Update Prozess müssen beide Controller mit den selben Flags ausgeführt werden.**
 Nebenbei kann das Bash Skript *selfdriving_controller.sh* gestartet werden. Es führt die übertragene Firmware in */firmware_ecu* permanent aus, womit sich die Auswirkungen eines Updates direkt beobachten lassen.
+Neben den Flags für die Security Funktionen, lässt sich auch das CAN interface mit **--iface=_[interface name]_** einstellen. Wird diese Option nicht genutzt, wird _vcan0_ als Standardeinstellung verwendet.
 
-Zusätzlich befinden sich im Ordner *attacker* zwei Skripte um ein mögliches Angriffsszenario zu demonstrieren.
+Zusätzlich zu den simulierten Steuergeräten befinden sich im Ordner *attacker* zwei Skripte um ein mögliches Angriffsszenario zu demonstrieren.
 
 * manipulated_update.py 
 
@@ -46,7 +47,7 @@ Zusätzlich befinden sich im Ordner *attacker* zwei Skripte um ein mögliches An
 
 **Die Angriffe können nur erfolgreich ausgeführt werden, wenn die jeweiligen Sicherheitsmechanismen nicht hinzugeschaltet sind.**
 
-
-
+**Bitte beachten**
+Der Demonstrator verwendet SocketCAN, sowie das ISO-TP Kernel Modul und kann somit nur auf einem Linux System ausgeführt werden.
 
 
