@@ -42,8 +42,8 @@ Zusätzlich zu den simulierten Steuergeräten befinden sich im Ordner *attacker*
 
 * read_firmware.py
 
-   - liest die übertragenen UDS Daten auf dem CAN Bus mit
-   - muss während eines Updates ausgeführt werden
+   - liest die übertragenen Daten, die mit dem UDS Service *Transfer Data* übertragen werden mit
+   - muss während des Updates ausgeführt werden
 
 **Die Angriffe können nur erfolgreich ausgeführt werden, wenn die jeweiligen Sicherheitsmechanismen nicht hinzugeschaltet sind.**
 
