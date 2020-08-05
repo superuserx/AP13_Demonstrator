@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "hello, this is firmware."
+echo "THIS IS EVIL MALWARE"

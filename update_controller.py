@@ -17,17 +17,19 @@ load_contrib('automotive.uds')
 load_contrib('automotive.ecu')
 load_contrib('cansocket')
 
-sock1 = ISOTPSocket('vcan0', sid=0x701, did=0x601, basecls=UDS)
 transfer_ready = False
 transfer_done = False
 use_SA = False
 use_encrypt = False
 use_sign = False
 sec_lvl = 0
+iface = "vcan0"
 
-options = getopt.getopt(sys.argv[1:], '', ['security-access', 'encryption', 'signature'])
+options = getopt.getopt(sys.argv[1:], '', ['iface=', 'security-access', 'encryption', 'signature'])
 
-for opt, _ in options[0]:
+for opt, arg in options[0]:
+    if opt == '--iface':
+        iface = arg
     if opt == '--security-access':
         use_SA = True
         sec_lvl = 1
@@ -36,13 +38,15 @@ for opt, _ in options[0]:
     elif opt == '--signature':
         use_sign = True
 
+sock = ISOTPSocket(iface, sid=0x701, did=0x601, basecls=UDS)
+
 if use_SA:
     SA_request = False
-    SA_secret = 0xdeadbeef00
+    SA_secret = 0x0deadbeef0
     SA_sec_key = None
 
 if use_encrypt:
-    aes_key = b"aI2#csCDackIH$13"
+    aes_key = b"aI2#csCDackIH$1V3b-Id83n4+12Mk=K"
 
 if use_sign:
     rsa_pub_key = RSA.import_key(open('public_key.pub').read())
@@ -102,7 +106,7 @@ def securityAccess(resp, req):
 
 
 def transferData(resp, req):
-    global transfer_ready, transfer_done, use_encrypt, use_sign
+    global transfer_ready, transfer_done, use_encrypt, use_sign, answering_machine
 
     if (req.service + 0x40) == resp.service and len(req) > 1:
         if req.blockSequenceCounter == 0 and transfer_ready:
@@ -117,6 +121,9 @@ def transferData(resp, req):
                 data = payload['data']
             if use_sign:
                 if not verify_data(data, payload['sign']):
+                    print("reset")
+                    answering_machine.ecu_state.reset()
+                    print(answering_machine.ecu_state)
                     return False
             update_fw(data)
             return True
@@ -166,7 +173,7 @@ if use_SA:
     responseList.insert(0, ECUResponse(session=2, responses=UDS() / UDS_NR(requestServiceId=0x27, negativeResponseCode=0x33), answers=securityAccess))
     responseList.insert(0, ECUResponse(session=2, responses=UDS() / UDS_SAPR(), answers=securityAccess))
 
-answering_machine = ECU_am(supported_responses=responseList, main_socket=sock1, basecls=UDS, timeout=None, verbose=False)
+answering_machine = ECU_am(supported_responses=responseList, main_socket=sock, basecls=UDS, timeout=None, verbose=False)
 sim1 = threading.Thread(target=answering_machine)
 sim1.start()
 

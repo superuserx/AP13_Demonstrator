@@ -19,10 +19,13 @@ load_contrib('cansocket')
 use_SA = False
 use_encrypt = False
 use_sign = False
+iface = "vcan0"
 
-options = getopt.getopt(sys.argv[1:], '', ['security-access', 'encryption', 'signature'])
+options = getopt.getopt(sys.argv[1:], '', ['iface=', 'security-access', 'encryption', 'signature'])
 
-for opt, _ in options[0]:
+for opt, arg in options[0]:
+    if opt == '--iface':
+        iface = arg
     if opt == '--security-access':
         use_SA = True
     elif opt == '--encryption':
@@ -30,13 +33,15 @@ for opt, _ in options[0]:
     elif opt == '--signature':
         use_sign = True
 
+sock = ISOTPSocket(iface, sid=0x601, did=0x701, basecls=UDS)
+
 with open("firmware_gateway/firmware.sh", "rb") as fw:
     data = fw.read()
 
 payload = {}
 
 if use_SA:
-    SA_secret = 0xdeadbeef00
+    SA_secret = 0x0deadbeef0
     SA_sec_key = None
 
 if use_sign:
@@ -46,7 +51,7 @@ if use_sign:
     payload['sign'] = b64encode(sign).decode('utf-8')
 
 if use_encrypt:
-    aes_key = b"aI2#csCDackIH$13"
+    aes_key = b"aI2#csCDackIH$1V3b-Id83n4+12Mk=K"
     cipher = AES.new(aes_key, AES.MODE_OCB)
     ciphertext, tag = cipher.encrypt_and_digest(data)
     payload['data'] = b64encode(ciphertext).decode('utf-8')
@@ -68,8 +73,6 @@ requests = [ \
 if use_SA:
     requests.insert(1, UDS()/UDS_SA(securityAccessType=0x2))
     requests.insert(1, UDS()/UDS_SA(securityAccessType=0x1))
-
-sock = ISOTPSocket('vcan0', sid=0x601, did=0x701, basecls=UDS)
 
 for req in requests:
     if hasattr(req, 'securityAccessType') and req.securityAccessType == 0x2:
