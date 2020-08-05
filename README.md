@@ -47,7 +47,7 @@ Zusätzlich zu den simulierten Steuergeräten befinden sich im Ordner *attacker*
 
 **Die Angriffe können nur erfolgreich ausgeführt werden, wenn die jeweiligen Sicherheitsmechanismen nicht hinzugeschaltet sind.**
 
-**Bitte beachten**
+**Bitte beachten**:
 Der Demonstrator verwendet SocketCAN, sowie das ISO-TP Kernel Modul und kann somit nur auf einem Linux System ausgeführt werden.
 
 
