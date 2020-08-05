@@ -31,21 +31,21 @@ Um die Auswirkung der eingesetzten Sicherheitsmechanismen zu veranschaulichen, k
 
 **Für einen erfolgreichen Update Prozess müssen beide Controller mit den selben Flags ausgeführt werden.**
 Nebenbei kann das Bash Skript *selfdriving_controller.sh* gestartet werden. Es führt die übertragene Firmware in */firmware_ecu* permanent aus, womit sich die Auswirkungen eines Updates direkt beobachten lassen.
-Neben den Flags für die Security Funktionen, lässt sich auch das CAN interface mit **--iface=_[interface name]_** einstellen. Wird diese Option nicht genutzt, wird _vcan0_ als Standardeinstellung verwendet.
+Neben den Flags für die Security Funktionen, lässt sich auch das CAN interface mit **--iface=_[CAN interface name]_** einstellen. Wird diese Option nicht genutzt, wird _vcan0_ als Standardeinstellung verwendet.
 
 Zusätzlich zu den simulierten Steuergeräten befinden sich im Ordner *attacker* zwei Skripte um ein mögliches Angriffsszenario zu demonstrieren.
 
-* manipulated_update.py 
+* manipulated_update.py [CAN interface name]
 
    - überträgt das Skript *malware.sh* an den Update Controller
    - wird anstatt des OVA Controllers ausgeführt
+   - funktioniert nur wenn keins der _Security-Flags_ gesetzt ist
 
-* read_firmware.py
+* read_firmware.py [CAN interface name]
 
-   - liest die übertragenen Daten, die mit dem UDS Service *Transfer Data* übertragen werden mit
-   - muss während des Updates ausgeführt werden
-
-**Die Angriffe können nur erfolgreich ausgeführt werden, wenn die jeweiligen Sicherheitsmechanismen nicht hinzugeschaltet sind.**
+   - liest die Daten, die mit dem UDS Service *Transfer Data* übertragen werden mit und gibt diese aus
+   - muss vor dem Update gestartet werden und läuft in einer Endlossschleife
+   - die mitgeschnittenen Daten sind nur ohne das _encryption_ Flag lesbar
 
 **Bitte beachten**:
 Der Demonstrator verwendet SocketCAN und kann somit nur auf einem Linux System ausgeführt werden. Außerdem muss zusätzlich zu den benötigten Python Modulen das ISO-TP Kernel Modul installiert werden.
