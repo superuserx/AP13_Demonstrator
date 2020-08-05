@@ -2,7 +2,7 @@
 
 Das Ziel des Demonstrators ist es, die in EAST-ADL modellierten Sicherheitsmaßnahmen umzusetzen.
 Als Beispiel wurde der Use-Case "Firmware-Update eines Steuergeräts über den CAN Bus" gewählt.
-Bei der Modellierung mit EAST-ADL wurden folgende Schwachstellen identifiziert:
+Bei der Modellierung mit EAST-ADL wurden folgende mögliche Schwachstellen identifiziert:
 
 * Auslesen der Firmware während des Update Prozesses
 * Manipulierte Firmware auf dem Steuergerät installieren 
@@ -18,8 +18,9 @@ Hierbei werden zwei Steuergeräte (*ova_controller.py* / *update_controller.py*)
 
 # Usage
 
-**1. python3 update_controller.py [optional flags]**
-**2. python3 ova_controller.py [optional flags]**
+**1. python update_controller.py [optional flags]**
+
+**2. python ova_controller.py [optional flags]**
 
 Nachdem das Update übertragen wurde beendet sich der OVA Controller während der Update Controller in einer Endlosschleife läuft. Der Update Controller muss nur bei einer Änderung der Konfiguration (optional flags) neu gestartet werden. 
 Um die Auswirkung der eingesetzten Sicherheitsmechanismen zu veranschaulichen, können diese über das jeweilige Flag hinzugeschaltet oder weggelassen werden.
@@ -28,8 +29,11 @@ Um die Auswirkung der eingesetzten Sicherheitsmechanismen zu veranschaulichen, k
 * --signature
 * --security-access
 
-Für einen erfolgreichen Update Prozess müssen beide Controller mit den selben Flags ausgeführt werden.
-Zusätzlich kann das Bash Skript *selfdriving_controller.sh* gestartet werden. Es führt die übertragene Firmware in */firmware_ecu* permanent aus. 
+**Für einen erfolgreichen Update Prozess müssen beide Controller mit den selben Flags ausgeführt werden.**
+Zusätzlich kann das Bash Skript *selfdriving_controller.sh* gestartet werden. Es führt die übertragene Firmware in */firmware_ecu* permanent aus, womit sich die Auswirkungen eines Updates direkt beobachten lassen.
+
+
+
 
 
 
