@@ -32,9 +32,19 @@ Um die Auswirkung der eingesetzten Sicherheitsmechanismen zu veranschaulichen, k
 **Für einen erfolgreichen Update Prozess müssen beide Controller mit den selben Flags ausgeführt werden.**
 Nebenbei kann das Bash Skript *selfdriving_controller.sh* gestartet werden. Es führt die übertragene Firmware in */firmware_ecu* permanent aus, womit sich die Auswirkungen eines Updates direkt beobachten lassen.
 
-Zusätzlich befinden sich im Ordner *attacker* zwei Skripte um ein mögliches Angriffsszenario zu demonstrieren. Mit *manipulated_update.py* wird das Skript *malware.sh* an den Update Controller übertragen. 
-Wird *read_firmware.py* während eines Updates ausgeführt, werden die übertragenen UDS Daten auf dem CAN Bus ausgelesen und ausgegeben.
-Die Angriffe können nur erfolgreich ausgeführt werden, wenn die jeweiligen Sicherheitsmechanismen nicht hinzugeschaltet sind.
+Zusätzlich befinden sich im Ordner *attacker* zwei Skripte um ein mögliches Angriffsszenario zu demonstrieren.
+
+* manipulated_update.py 
+
+   - überträgt das Skript *malware.sh* an den Update Controller
+   - wird anstatt des OVA Controllers ausgeführt
+
+* read_firmware.py
+
+   - liest die übertragenen UDS Daten auf dem CAN Bus mit
+   - muss während eines Updates ausgeführt werden
+
+**Die Angriffe können nur erfolgreich ausgeführt werden, wenn die jeweiligen Sicherheitsmechanismen nicht hinzugeschaltet sind.**
 
 
 
