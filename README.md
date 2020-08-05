@@ -13,7 +13,7 @@ Um diese Sicherheitslücken zu schließen implementiert der Demonstrator folgend
 * Firmware-Signatur (SHA-256/RSA-2048)
 * UDS Security Access
 
-Hierbei werden zwei Steuergeräte (*ova_controller.py* / *update_controller.py*) simuliert, die mit den im Automobilbereich verwendeten Protokollen ISO-TP und UDS kommunizieren. Dabei wartet der Update Controller ständig auf eine neue Firmware, welche vom OVA Controller übermittelt wird. Dieser sendet dafür das Skript *firmware.sh* im Ordner */firmware_gateway*, das nach der Übertragung ins */firmware_ecu* Verzeichnis geschrieben wird. 
+Hierbei werden zwei Steuergeräte (*ova_controller.py* / *update_controller.py*) simuliert, die mit den im Automobilbereich verwendeten Protokollen ISO-TP und UDS kommunizieren. Dabei wartet der Update Controller ständig auf eine neue Firmware, welche vom OVA Controller übermittelt wird. Dieser sendet dafür das Skript *firmware.sh* im Ordner *firmware_gateway*, das nach der Übertragung ins *firmware_ecu* Verzeichnis geschrieben wird. 
 
 
 # Usage
@@ -30,8 +30,11 @@ Um die Auswirkung der eingesetzten Sicherheitsmechanismen zu veranschaulichen, k
 * --security-access
 
 **Für einen erfolgreichen Update Prozess müssen beide Controller mit den selben Flags ausgeführt werden.**
-Zusätzlich kann das Bash Skript *selfdriving_controller.sh* gestartet werden. Es führt die übertragene Firmware in */firmware_ecu* permanent aus, womit sich die Auswirkungen eines Updates direkt beobachten lassen.
+Nebenbei kann das Bash Skript *selfdriving_controller.sh* gestartet werden. Es führt die übertragene Firmware in */firmware_ecu* permanent aus, womit sich die Auswirkungen eines Updates direkt beobachten lassen.
 
+Zusätzlich befinden sich im Ordner *attacker* zwei Skripte um ein mögliches Angriffsszenario zu demonstrieren. Mit *manipulated_update.py* wird das Skript *malware.sh* an den Update Controller übertragen. 
+Wird *read_firmware.py* während eines Updates ausgeführt, werden die übertragenen UDS Daten auf dem CAN Bus ausgelesen und ausgegeben.
+Die Angriffe können nur erfolgreich ausgeführt werden, wenn die jeweiligen Sicherheitsmechanismen nicht hinzugeschaltet sind.
 
 
 
