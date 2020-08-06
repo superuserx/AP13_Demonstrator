@@ -1,6 +1,6 @@
 # Pets AP13 - Demonstrator
 
-![](demonstrator.gif)
+<img src="demonstrator.gif" width="1400" height="600" />
 
 Das Ziel des Demonstrators ist es, die in EAST-ADL modellierten Sicherheitsmaßnahmen umzusetzen.
 Als Beispiel wurde der Use-Case "Firmware-Update eines Steuergeräts über den CAN Bus" gewählt.
