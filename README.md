@@ -1,7 +1,5 @@
 # Pets AP13 - Demonstrator
 
-<img src="demonstrator.gif" width="1400" height="600" />
-
 Das Ziel des Demonstrators ist es, die in EAST-ADL modellierten Sicherheitsmaßnahmen umzusetzen.
 Als Beispiel wurde der Use-Case "Firmware-Update eines Steuergeräts über den CAN Bus" gewählt.
 Bei der Modellierung mit EAST-ADL wurden folgende mögliche Schwachstellen identifiziert:
@@ -48,6 +46,8 @@ Zusätzlich zu den simulierten Steuergeräten befinden sich im Ordner *attacker*
    - liest die Daten, die mit dem UDS Service *Transfer Data* übertragen werden mit und gibt diese aus
    - muss vor dem Update gestartet werden und läuft in einer Endlossschleife
    - die mitgeschnittenen Daten sind nur ohne das _encryption_ Flag lesbar
+
+<img src="demonstrator.gif" width="1000" height="500" />
 
 **Bitte beachten**:
 Der Demonstrator verwendet SocketCAN und kann somit nur auf einem Linux System ausgeführt werden. Außerdem muss zusätzlich zu den benötigten Python Modulen das ISO-TP Kernel Modul installiert werden.
