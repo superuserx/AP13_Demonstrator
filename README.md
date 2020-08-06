@@ -1,5 +1,7 @@
 # Pets AP13 - Demonstrator
 
+![](demonstrator.gif)
+
 Das Ziel des Demonstrators ist es, die in EAST-ADL modellierten Sicherheitsmaßnahmen umzusetzen.
 Als Beispiel wurde der Use-Case "Firmware-Update eines Steuergeräts über den CAN Bus" gewählt.
 Bei der Modellierung mit EAST-ADL wurden folgende mögliche Schwachstellen identifiziert:
