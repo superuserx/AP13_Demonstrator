@@ -41,13 +41,15 @@ Zusätzlich zu den simulierten Steuergeräten befinden sich im Ordner *attacker*
    - wird anstatt des OVA Controllers ausgeführt
    - funktioniert nur wenn keins der _Security-Flags_ gesetzt ist
 
+<img src="demo_malware.gif" width="1000" height="500" />
+
 * read_firmware.py [CAN interface name]
 
    - liest die Daten, die mit dem UDS Service *Transfer Data* übertragen werden mit und gibt diese aus
    - muss vor dem Update gestartet werden und läuft in einer Endlossschleife
    - die mitgeschnittenen Daten sind nur ohne das _encryption_ Flag lesbar
 
-<img src="demonstrator.gif" width="1000" height="500" />
+<img src="demo_readfirmware.gif" width="1000" height="500" />
 
 **Bitte beachten**:
 Der Demonstrator verwendet SocketCAN und kann somit nur auf einem Linux System ausgeführt werden. Außerdem muss zusätzlich zu den benötigten Python Modulen das ISO-TP Kernel Modul installiert werden.
