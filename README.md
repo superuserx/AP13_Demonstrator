@@ -36,7 +36,7 @@ Neben den Flags für die Security Funktionen, lässt sich auch das CAN interface
 <img src="demo_update.gif" width="1000" height="500" />
 
 
-
+# Angriffssimulation
 Zusätzlich zu den simulierten Steuergeräten befinden sich im Ordner *attacker* zwei Skripte um ein mögliches Angriffsszenario zu demonstrieren.
 
 * manipulated_update.py [CAN interface name]
