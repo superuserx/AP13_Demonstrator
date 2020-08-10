@@ -33,6 +33,10 @@ Um die Auswirkung der eingesetzten Sicherheitsmechanismen zu veranschaulichen, k
 Nebenbei kann das Bash Skript *selfdriving_controller.sh* gestartet werden. Es führt die übertragene Firmware in */firmware_ecu* permanent aus, womit sich die Auswirkungen eines Updates direkt beobachten lassen.
 Neben den Flags für die Security Funktionen, lässt sich auch das CAN interface mit **--iface=_[CAN interface name]_** einstellen. Wird diese Option nicht genutzt, wird _vcan0_ als Standardeinstellung verwendet.
 
+<img src="demo_update.gif" width="1000" height="500" />
+
+
+
 Zusätzlich zu den simulierten Steuergeräten befinden sich im Ordner *attacker* zwei Skripte um ein mögliches Angriffsszenario zu demonstrieren.
 
 * manipulated_update.py [CAN interface name]
